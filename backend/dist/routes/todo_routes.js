@@ -17,6 +17,8 @@ const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const todo_main_1 = __importDefault(require("./todo_main"));
+router.use("/todos", todo_main_1.default);
 router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, mobile, password } = req.body;

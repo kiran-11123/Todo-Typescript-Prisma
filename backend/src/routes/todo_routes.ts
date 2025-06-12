@@ -3,6 +3,9 @@ import express, { Request, Response } from "express";
 const router  = express.Router();
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs');
+import todo_router from "./todo_main";
+
+router.use("/todos", todo_router);
 
 
 router.post("/register" , async (req:Request , res:Response)=>{

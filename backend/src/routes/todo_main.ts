@@ -4,6 +4,51 @@ import { authenticateToken } from "../middlewares/token_middleware";
 const todo_router = express.Router();
 
 
+todo_router.post("/upload_todo" , authenticateToken , async(req:Request , res:Response)=>{
+        
+
+     try{
+
+         if(req.user && typeof req.user==="object" && "id" in req.user){
+
+             const user_id = req.user.id;
+             const title = req.body.title;
+             const description = req.body.description ; 
+
+             const response = await prisma.todo.create({
+                 data:{
+                     title:title,
+                     description:description,
+                     user_id :user_id
+                 }
+             })
+
+             if(response!==null){
+                res.status(200).json({
+                    message:"Upload Successfull"
+                })
+             }
+         }
+
+         else{
+            res.json({
+                message:"Something went wrong"
+            })
+         }
+
+
+
+     }
+     catch(er){
+        res.json({
+            message:er
+        })
+     }
+})
+       
+
+
+
 todo_router.get("/get_todos" , authenticateToken ,  async( req:Request , res:Response) =>{
      
 
