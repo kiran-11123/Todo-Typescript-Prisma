@@ -5,6 +5,12 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs');
 import todo_router from "./todo_main";
 
+  
+
+
+
+
+
 router.use("/todos", todo_router);
 
 
@@ -68,7 +74,14 @@ router.post("/register" , async (req:Request , res:Response)=>{
 router.post("/login" , async (req:Request , res:Response)=>{
       
     try{
+        
+        const parsedResponse  = signInput.safeParse(req.body);
 
+        if(!parsedResponse.success) {
+              res.json({
+                message:"Error while Parsing"
+             })
+        }
         const {email , password} = req.body;
 
         const email_check =await  prisma.user.findUnique({

@@ -18,6 +18,11 @@ const router = express_1.default.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const todo_main_1 = __importDefault(require("./todo_main"));
+const zod_1 = require("zod");
+const signInput = zod_1.z.object({
+    email: zod_1.z.string(),
+    password: zod_1.z.string(),
+});
 router.use("/todos", todo_main_1.default);
 router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -62,6 +67,12 @@ router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, functio
 }));
 router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const parsedResponse = signInput.safeParse(req.body);
+        if (!parsedResponse.success) {
+            res.json({
+                message: "Error while Parsing"
+            });
+        }
         const { email, password } = req.body;
         const email_check = yield prisma_1.default.user.findUnique({
             where: {
